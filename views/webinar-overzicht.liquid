@@ -1,0 +1,61 @@
+{% render 'partials/head.liquid' %}
+
+<main id="content">
+
+    <h1 class="page-title">Webinars</h1>
+    {% comment %} <span class="sub-title">Search categories</span> {% endcomment %}
+
+    <ul class="filter-select">
+        {% assign unique_categories = "" %}
+
+        {% for webinar in webinars %}
+        {% for category in webinar.categories %}
+        {% assign category_name = category.avl_categories_id.name %}
+
+        {% unless unique_categories contains category_name %}
+        {% assign unique_categories = unique_categories | append: category_name | append: "," %}
+        {% endunless %}
+        {% endfor %}
+        {% endfor %}
+
+        {% assign unique_categories_array = unique_categories | split: "," | sort %}
+
+        {% for category in unique_categories_array %}
+        {% if category != "" %}
+        <li class="filter-buttons"><a href="/?category={{ category | url_encode }}">{{ category }}</a></li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+
+    <section class="webinars-container">
+        {% comment %} webinar data inladen {% endcomment %}
+        {% for webinar in webinars %}
+        <a href="/webinars/{{ webinar.slug }}" class="webinar-link"> 
+            <article class="webinar-item">
+
+                {% comment %} thumbnail {% endcomment %}
+                <img src="https://fdnd-agency.directus.app/assets/{{ webinar.thumbnail }}" class="webinar-thumbnail-img">
+
+                {% comment %} title {% endcomment %}
+                <h2 class="webinar-item-title">{{ webinar.title }}</h2>
+
+                {% comment %} speaker {% endcomment %}
+                {% for speaker in webinar.speakers %}
+                <p class="webinar-speaker-name">{{ speaker.avl_speakers_id.fullname }}</p>
+                {% endfor %}
+
+                <p class="webinar-date-text">{{ webinar.date }}</p>
+
+                {% comment %} categorie {% endcomment %}
+                {% for categories in webinar.categories %}
+                <p class="webinar-category-box">{{ categories.avl_categories_id.name }}</p>
+                {% endfor %}
+
+            </article>
+        </a>
+        {% endfor %}
+    </section>
+
+</main>
+
+{% render 'partials/foot.liquid' %}

@@ -1,0 +1,71 @@
+{% render 'partials/head.liquid' %}
+
+<main id="content">
+
+    <h1 class="main-title">Oncollaboration</h1>
+
+    <section class="about-us-field">
+        <p class="about-us-text"><strong>Oncollaboration</strong> is a platform dedicated to connecting oncology
+            professionals worldwide. By partnering with institutions like <strong>Antoni van Leeuwenhoek Hospital
+                (AVL)</strong> and <strong>Dr. Sardjito Hospital</strong>, we facilitate the sharing of knowledge,
+            resources, and innovative tools to improve cancer care. Our mission is to support collaboration, drive
+            advancements in oncology, and ultimately enhance patient outcomes.
+        </p>
+    </section>
+
+    <h2 class="h2-main-title">Partners:</h2>
+
+    <h2 class="h2-main-title">Webinars:</h2>
+    <section class="webinars-container-scroll">
+        {% for webinar in webinars %}
+        <a href="/webinars/{{ webinar.slug }}" class="webinar-link">
+            <article class="webinar-item">
+                <img src="https://fdnd-agency.directus.app/assets/{{ webinar.thumbnail }}"
+                    class="webinar-thumbnail-img">
+                <h2 class="webinar-title">{{ webinar.title }}</h2>
+
+                {% for speaker in webinar.speakers %}
+                <p class="speakers-text">{{ speaker.avl_speakers_id.fullname }}</p>
+                {% endfor %}
+
+                <p class="date-text">{{ webinar.date }}</p>
+
+                {% for category in webinar.categories %}
+                <p class="categorie-box">{{ category.avl_categories_id.name }}</p>
+                {% endfor %}
+            </article>
+        </a>
+        {% else %}
+        <div class="empty_state">
+            <h3 class="h3-empty-state">No webinars found</h3>
+            <p class="p-empty-state">There have been no webinars found in this section yet</p>
+            <a href="webinar-detail.liquid">Go to webinars</a>
+        </div>
+        {% endfor %}
+    </section>
+
+    <h2 class="h2-main-title">Contourings:</h2>
+    <section class="contourings-container-scroll">
+        {% for contouring in contourings %}
+        <a href="/contourings/{{ contouring.slug }}" class="contouring-link">
+            <article class="contouring-item">
+                <img src="https://fdnd-agency.directus.app/assets/{{ contouring.image_scan }}" class="contouring-img">
+                <h2 class="contouring-title">{{ contouring.title }}</h2>
+
+                {% for category in contouring.categories %}
+                <p class="categorie-box">{{ category.avl_categories_id.name }}</p>
+                {% endfor %}
+            </article>
+        </a>
+        {% comment %} {% else %}
+        <div class="empty_state">
+            <h3 class="h3-empty-state">No contourings found</h3>
+            <p class="p-empty-state">There have been no contourings found in this section yet</p>
+            <a href="webinar-detail.liquid">Go to contourings</a>
+        </div> {% endcomment %}
+        {% endfor %}
+    </section>
+
+</main>
+
+{% render 'partials/foot.liquid' %}

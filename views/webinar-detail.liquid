@@ -1,0 +1,249 @@
+{% render 'partials/head.liquid' title: webinar.title %}
+
+<main id="content">
+
+    {% comment %} back button {% endcomment %}
+    <div class="nav-cat-buttons">
+        <button onclick="location.href='webinar-overzicht.liquid';" class="back-button">
+            Return to webinars
+        </button>
+
+        <div>
+            {% comment %} categorie button {% endcomment %}
+            {% if webinar.categories %}
+            {% for category in webinar.categories %}
+            <p class="categorie-box">{{ category.avl_categories_id.name }}</p>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    {% comment %} webinar video {% endcomment %}
+    <div class="webinar-video">
+        {% if webinar.video %}
+            {% for video in webinar.video %}
+            <video controls class="webinar-video">
+                <source src="https://fdnd-agency.directus.app/assets/{{ video }}" />
+            </video>
+            {% endfor %}
+        {% else %}
+            <div class="empty_state">
+                <h3 class="h3-empty-state">No video found</h3>
+                <p class="p-empty-state">There is no video available for this webinar yet</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <section class="page-content">
+        {% comment %} webinar titel {% endcomment %}
+        <h1 class="details-page-h1">{{ webinar.title }}</h1>
+
+        {% comment %} grid layout voor info onder titel {% endcomment %}
+        {% comment %} speaker info {% endcomment %}
+        <div class="speaker-info">
+            {% if webinar.speakers %}
+                {% for speaker in webinar.speakers %}
+                <img src="https://fdnd-agency.directus.app/assets/{{ speaker.avl_speakers_id.profile_picture }}"
+                    class="speakers-image" alt="Picture of {{ speaker.avl_speakers_id.fullname }}">
+                <div>
+                    <p>{{ speaker.avl_speakers_id.fullname }}</p>
+                    <p>{{ speaker.avl_speakers_id.entitle }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty_state">
+                    <h3 class="h3-empty-state">No speakers found</h3>
+                    <p class="p-empty-state">There are no speakers assigned to this webinar</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    {% comment %} categorie button {% endcomment %}
+    <details class="details-field">
+        <summary class="description-summary"><strong>Description</strong></summary>
+        <div>
+            <p><strong>Views:</strong> {{ webinar.views }} views</p>
+            <p><strong>Date:</strong> {{ webinar.date | date: "%d %b %Y" }}</p>
+        </div>
+        <p>{{ webinar.description }}</p>
+    </details>
+
+    {% comment %} transcript {% endcomment %}
+    <div class="detail-buttons-details">
+        <details class="transcript-button">
+            <summary><strong>Read transcript</strong></summary>
+            {% if webinar.transcript %}
+                <p class="transcript-text">{{ webinar.transcript }}</p>
+            {% else %}
+                <p>No transcript available.</p>
+            {% endif %}
+        </details>
+        <details class="resource-button">
+            <summary><strong>Resources</strong></summary>
+            {% if webinar.resources %}
+                <p>{{ webinar.resources }}</p>
+            {% else %}
+                <div class="empty_state">
+                    <h3 class="h3-empty-state">No resources found</h3>
+                    <p class="p-empty-state">There are no resources available for this webinar</p>
+                </div>
+            {% endif %}
+        </details>
+    </div>
+
+    {% comment %} comment sectie {% endcomment %}
+    <h2><strong>Q&A</strong> ask a question</h2>
+
+    <div class="form-section">
+        {% if webinar.slug and webinar.id %}
+        <form method="post" action="{{ webinar.slug }}/{{ webinar.id }}" id="commentForm">
+        {% else %}
+        <form method="post" action="#" id="commentForm">
+        {% endif %}
+            <div class="input-container">
+                <input type="text" name="comment" placeholder="Add a comment..." id="commentInput">
+                <button type="submit" class="send-button" id="sendButton"
+                    onclick="this.classList.toggle('send-button--loading')">
+                    <span class="send-button__text">Send</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="comment-section">
+        <h2><strong>Comments</strong></h2>
+        <div id="commentsContainer">
+            {% if comments %}
+                {% for comment in comments %}
+                    {% if comment.parent_id == null %}
+                    <p class="comments">{{ comment.content }}</p>
+                    {% endif %}
+                    {% if comment.parent_id != null %}
+                    <p class="replies">{{ comment.content }}</p>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="empty_state">
+                    <h3 class="h3-empty-state">No comments found</h3>
+                    <p class="p-empty-state">There have been no comments placed in this section yet</p>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+</section>
+
+</main>
+
+
+
+
+
+
+<script type="module">
+    // We maken hieronder aannames over wat de browser ondersteunt
+    // Dus laten we deze eerst testen met Feature Detection
+    // https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Testing/Feature_detection
+    if ('fetch' in window && 'DOMParser' in window) {
+
+        // Als er ergens op de pagina een formulier wordt gesubmit..
+        // (We maken hier gebruik van Event Delegation)
+        document.addEventListener('submit', async function (event) {
+
+            // Hou in een variabele bij welk formulier dat was
+            const form = event.target;
+
+            // Voorkom de standaard submit van de browser
+            // Let op: hiermee overschrijven we de default Loading state van de browser...
+            event.preventDefault();
+
+            // LAAD STATUS tonen
+            const button = document.getElementById("sendButton");
+            const loader = document.getElementById("loader");
+            const buttonText = document.querySelector(".send-button__text");
+
+            // Toon de loading state (spinner), verberg de tekst en disable de button
+            button.classList.add("send-button--loading");
+            button.disabled = true;  //button doet het even niet meer, omdat de actie bezig is...
+            buttonText.classList.add("hidden");
+
+
+            // Maak een nieuw commentaar object (je kunt hier ook andere data toevoegen zoals 'date' en 'isReply' voor reply-commentaar)
+            const newComment = {
+                text: form.querySelector('input[name="comment"]').value, // Haal de waarde van het formulier op
+                date: new Date().toLocaleString(),
+                isReply: false // Voeg een flag toe om onderscheid te maken tussen gewone en reply comments
+            };
+
+            // Voeg het nieuwe comment direct toe aan de DOM (zodra het wordt gepost)
+            addCommentToDOM(newComment);
+
+            // Doe een fetch naar de server, net als hoe de browser dit normaal zou doen
+            // Gebruik daarvoor het action en method attribuut van het originele formulier
+            // Inclusief alle formulierelementen
+            const response = await fetch(form.action, {
+                method: form.method,
+                body: new URLSearchParams(new FormData(form))
+            });
+
+            // De server redirect op de normale manier, en geeft HTML terug
+            // (De server weet niet eens dat deze fetch via client-side JavaScript gebeurde)
+            const responseText = await response.text();
+
+            // Normaal zou de browser die HTML parsen en weergeven, maar daar moeten we nu zelf iets mee
+            // Parse de nieuwe HTML en maak hiervan een nieuw Document Object Model in het geheugen
+            const parser = new DOMParser();
+            const responseDOM = parser.parseFromString(responseText, 'text/html');
+            console.log(responseDOM);
+
+
+            // LOADING STATE WEGHALEN 
+            // Verberg de spinner en enable de button
+            button.classList.remove("send-button--loading");
+            button.disabled = false;  //nu doet de button het weer
+            //hier kan je ook het form fields leeg maken, dit ding: <input type="text" name="comment" placeholder="Add a comment...">
+
+            // Maak het tekstveld leeg na het versturen van de opmerking
+            commentInput.value = '';
+
+            buttonText.classList.remove("hidden");
+
+            // Als de server een succesvolle response geeft, bevestig dan de succesvolle post
+            if (response.ok) {
+                console.log('Comment succesvol gepost');
+                // Optioneel kun je hier ook iets doen, bijvoorbeeld de comment bevestigen
+            } else {
+                console.error("Er is een fout opgetreden bij het posten van de opmerking");
+                // Hier kun je een foutmelding tonen of de comment verwijderen als het niet succesvol was
+            }
+        });
+
+        // Functie om de nieuwe opmerking aan de DOM toe te voegen
+        function addCommentToDOM(comment) {
+            const commentsContainer = document.getElementById('commentsContainer');
+
+            const commentElement = document.createElement('p'); // Gebruik <p> zoals in bestaande comments
+            commentElement.textContent = comment.text;
+
+            // Voeg de juiste class toe (zelfde als voor bestaande comments)
+            if (comment.isReply) {
+                commentElement.classList.add('replies'); // Voeg 'replies' toe als het een reply is
+            } else {
+                commentElement.classList.add('comments'); // Voeg 'comments' toe voor een gewone comment
+            }
+
+            commentsContainer.prepend(commentElement); // Plaats de nieuwe opmerking bovenaan
+        }
+    }
+</script>
+
+
+{% comment %} moet nu alleen nog zorgen dat de comments standaard de nieuwste bovenaan zetten {% endcomment %}
+
+
+
+
+
+
+{% render 'partials/foot.liquid' %}
