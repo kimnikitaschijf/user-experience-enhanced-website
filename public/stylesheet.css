@@ -14,7 +14,7 @@ html {
 }
 
 main {
-    /* margin: 0 auto; */
+    margin: 0 auto;
     min-height: 100vh;
     padding-bottom: 50px;
     transition: margin-top 0.2s ease-in-out;
@@ -45,7 +45,8 @@ a {
     --primary-color: #005185;
     --secondary-color: #008c72;
     --background-color: #f4f4f4;
-    --secondary-background-color: #dadada;
+    --secondary-background-color: #e8e8e8;
+    --intro-background-color: #9fe1f5;
     --background-category-color: #18b2a2;
     --hover-state-color: #66c2a5;
     --accent-color: #dae003;
@@ -68,6 +69,11 @@ a {
     --card-max-width: 384px;
     --focus: solid 3px hsl(321, 58%, 55%);
 }
+
+html {
+    view-transition-name: default;
+  }
+  
 
 #cce7ff
 
@@ -333,3 +339,4 @@ nav .nav-links a {
         /* text-align: center; */
     }
 }
+

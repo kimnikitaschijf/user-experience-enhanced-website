@@ -406,7 +406,7 @@ h2 {
 }
 
 .replies {
-    margin-left: 2rem; 
+    margin-left: 2rem;
 }
 
 /* MARK: Detail T: 
@@ -468,7 +468,8 @@ Desktop */
     .details-field[open] {
         width: 66rem;
     }
-/* 
+
+    /* 
     #commentsContainer {
         max-width: 37rem;
     } */
@@ -485,23 +486,23 @@ Desktop */
     align-items: center;
     transition: background 0.3s ease;
 }
-  
-  /* tekst in de button */
-  .send-button__text {
+
+/* tekst in de button */
+.send-button__text {
     font-size: 1rem;
     font-weight: bold;
     color: var(--alt-text-color);
     transition: all 0.2s;
-  }
-  
-  /* tekst wordt verborgen en spinner getoond */
-  .send-button--loading .send-button__text {
+}
+
+/* tekst wordt verborgen en spinner getoond */
+.send-button--loading .send-button__text {
     visibility: hidden;
     opacity: 0;
-  }
-  
-  /* spinner zelf */
-  .send-button--loading::after {
+}
+
+/* spinner zelf */
+.send-button--loading::after {
     content: "";
     position: absolute;
     width: 1rem;
@@ -511,19 +512,19 @@ Desktop */
     border-top-color: var(--alt-text-color);
     border-radius: 50%;
     animation: button-loading-spinner 1s ease infinite;
-  /* infinite toevoegen voor spinner */
+    /* infinite toevoegen voor spinner */
 }
-  
-  /* Spinner animatie */
-  @keyframes button-loading-spinner {
+
+/* Spinner animatie */
+@keyframes button-loading-spinner {
     from {
-      transform: rotate(0turn);
+        transform: rotate(0turn);
     }
-  
+
     to {
-      transform: rotate(1turn);
+        transform: rotate(1turn);
     }
-  }
+}
 
 
 
@@ -563,24 +564,171 @@ Desktop */
 
 
 
-  /* MARK: Home M
+/* MARK: Home M
   Mobile */
 
-  .main-title {
-    margin: 1rem;
-    font-size: 2rem;
+
+  .intro-section {
+    padding: 3rem 2rem;
+    background: linear-gradient(to bottom, var(--secondary-background-color), var(--alt-text-color));
+    text-align: center;
+    border-bottom: 1px solid var(--background-color);
+    animation: fadeInUp 0.6s ease-out;
+    margin: 0;
   }
-
-  .about-us-field {
-background-color: var(--secondary-background-color);
-}
-
-.about-us-text {
-    margin: 1rem;
-    line-height: 1.5rem;
-}
-
-.h2-main-title {
-    font-size: 1.4rem;
+  
+  .intro-content {
+    max-width: 800px;
+    margin: 0 auto;
+    animation: slideIn 1s ease forwards;
+  }
+  
+  .main-title {
+    font-size: 2.8rem;
     font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+  }
+  
+  .about-us-text {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: var(--text-color);
+    margin-bottom: 2.5rem;
+    padding: 0 1rem;
+  }
+  
+  .h2-main-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+  }
+  
+  .partners-logos {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    animation: fadeIn 1.5s ease-in-out;
+  }
+  
+  .partner-logo {
+    width: 120px;
+    max-width: 100%;
+    height: auto;
+    filter: grayscale(100%);
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+  
+  .partner-logo:hover {
+    filter: grayscale(0%);
+    transform: scale(1.05);
+  }
+  
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Responsive tweaks */
+  @media (max-width: 600px) {
+    .main-title {
+      font-size: 2rem;
+    }
+  
+    .about-us-text {
+      font-size: 1rem;
+    }
+  
+    .partner-logo {
+      width: 90px;
+    }
+  }
+  
+
+  
+
+.webinars-container-scroll,
+.contourings-container-scroll {
+    display: flex;
+    overflow: scroll;
 }
+
+
+.webinar-item,
+.contouring-item {
+    padding: 1rem;
+    margin: 1.5rem;
+    border-radius: var(--border-radius-sm);
+    transition: transform 0.2s ease;
+}
+
+.webinar-item:hover,
+.contouring-item:hover {
+    transform: scale(1.02);
+}
+
+.home-webinar-thumbnail-img {
+    width: 20rem;
+    height: auto;
+}
+
+.webinar-title,
+.contouring-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0.5rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.speakers-text, 
+.date-text {
+    margin: 0.5rem;
+    color: var(--background-category-color);
+}
+
+.categorie-box {
+    background-color: var(--accent-color);
+    font-weight: bold;
+    display: inline-block;
+    font-size: 1rem;
+    text-transform: capitalize;
+    margin: 0.5rem;
+    color: var(--text-color);
+    padding: var(--padding-button);
+    border-radius: var(--border-radius-sm);
+}
+
