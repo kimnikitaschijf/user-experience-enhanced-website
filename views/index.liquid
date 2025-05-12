@@ -6,19 +6,66 @@
         <div class="intro-content">
             <h1 class="main-title">Oncollaboration</h1>
             <p class="about-us-text">
-                <strong>Oncollaboration</strong> is een platform dat oncologieprofessionals wereldwijd verbindt.
-                Samen met partners als <strong>Antoni van Leeuwenhoek Ziekenhuis (AVL)</strong> en
-                <strong>Dr. Sardjito Ziekenhuis</strong> delen we kennis, hulpmiddelen en innovaties om de kankerzorg te
-                verbeteren.
+                <strong>Oncollaboration</strong> is a platform that connects oncology professionals worldwide.
+                Together with partners such as the <strong>Antoni van Leeuwenhoek Hospital (AVL)</strong> and
+                <strong>Dr. Sardjito Hospital</strong>, we share knowledge, tools, and innovations to improve cancer
+                care.
             </p>
         </div>
 
         <div class="partners-preview">
-            <h2 class="h2-main-title">Onze partners</h2>
-            <!-- Partner logo’s of cards hier -->
+            <h2 class="h2-main-title">Our partners</h2>
+            <div class="partners-pictures">
+                <picture class="partner-logo-img">
+                    <source type="image/avif" srcset="../assets/kemenkessardjito.avif">
+                    <source type="image/webp" srcset="../assets/kemenkessardjito.webp">
+                    <img src="../assets/kemenkessardjito.png" alt="Kemenkes RS Sardjito" width="150" height="auto"
+                        loading="lazy">
+                </picture>
+
+                <picture class="partner-logo-img">
+                    <source type="image/avif" srcset="../assets/logo1.avif">
+                    <source type="image/webp" srcset="../assets/logo1.webp">
+                    <img src="../assets/logo1.png" alt="Nederlandse Vereniging voor Radiotherapie en Oncologie"
+                        width="150" height="auto" loading="lazy">
+                </picture>
+
+                <picture class="partner-logo-img">
+                    <source type="image/avif" srcset="../assets/logo2.avif">
+                    <source type="image/webp" srcset="../assets/logo2.webp">
+                    <img src="../assets/logo2.png" alt="Indonesian diasporga global network health" width="150"
+                        height="auto" loading="lazy">
+                </picture>
+
+                <picture class="partner-logo-img">
+                    <source type="image/avif" srcset="../assets/logo3.avif">
+                    <source type="image/webp" srcset="../assets/logo3.webp">
+                    <img src="../assets/logo3.png" alt="RSUP Dr. Sardjito Hospital Yogyakarta" width="150" height="auto"
+                        loading="lazy">
+                </picture>
+
+                <picture class="partner-logo-img">
+                    <source type="image/avif" srcset="../assets/logo4.avif">
+                    <source type="image/webp" srcset="../assets/logo4.webp">
+                    <img src="../assets/logo4.png" alt="Universitas Gadjah Mada Yogyakarta" width="150" height="auto"
+                        loading="lazy">
+                </picture>
+
+                <picture class="partner-logo-img">
+                    <source type="image/avif" srcset="../assets/logo5.avif">
+                    <source type="image/webp" srcset="../assets/logo5.webp">
+                    <img src="../assets/logo5.png" alt="Amsterdam UMC" width="150" height="auto" loading="lazy">
+                </picture>
+
+                <picture class="partner-logo-img">
+                    <source type="image/avif" srcset="../assets/logo6.avif">
+                    <source type="image/webp" srcset="../assets/logo6.webp">
+                    <img src="../assets/logo6.png" alt="Antoni van Leeuwenhoek" width="150" height="auto"
+                        loading="lazy">
+                </picture>
+            </div>
         </div>
     </section>
-
 
     <!-- Webinars -->
     <section>
@@ -67,8 +114,18 @@
             {% for contouring in contourings %}
             <a href="/contourings/{{ contouring.slug }}" class="contouring-link">
                 <article class="contouring-item">
-                    <img src="https://fdnd-agency.directus.app/assets/{{ contouring.image_scan }}"
-                        class="contouring-img">
+                    <picture>
+                        <source type="image/avif"
+                            srcset="https://fdnd-agency.directus.app/assets/{{ contouring.image_scan | replace: '.png', '.avif' | replace: '.jpg', '.avif' }}">
+
+                        <source type="image/webp"
+                            srcset="https://fdnd-agency.directus.app/assets/{{ contouring.image_scan | replace: '.png', '.webp' | replace: '.jpg', '.webp' }}">
+
+                        <img loading="lazy" src="https://fdnd-agency.directus.app/assets/{{ contouring.image_scan }}"
+                            class="contouring-img" alt="{{ contouring.title }}" width="200" height="auto"
+                            decoding="async">
+                    </picture>
+
                     <h3 class="contouring-title">{{ contouring.title }}</h3>
 
                     {% for category in contouring.categories %}

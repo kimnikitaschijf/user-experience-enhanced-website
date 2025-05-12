@@ -72,8 +72,8 @@ a {
 
 html {
     view-transition-name: default;
-  }
-  
+}
+
 
 #cce7ff
 
@@ -338,5 +338,45 @@ nav .nav-links a {
         color: var(--text-color);
         /* text-align: center; */
     }
+
+    @view-transition {
+        navigation: auto;
+    }
 }
 
+
+
+/* Animatie about us - home */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
