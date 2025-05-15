@@ -2,6 +2,7 @@
 
 <main id="content">
 
+    {% comment %} Intro section {% endcomment %}
     <section class="intro-section">
         <div class="intro-content">
             <h1 class="main-title">Oncollaboration</h1>
@@ -13,6 +14,7 @@
             </p>
         </div>
 
+        {% comment %} Partners section (voornamelijk logo's) {% endcomment %}
         <div class="partners-preview">
             <h2 class="h2-main-title">Our partners</h2>
             <div class="partners-pictures">
@@ -67,7 +69,10 @@
         </div>
     </section>
 
-    <!-- Webinars -->
+    {% comment %} loading="lazy"' zorgt ervoor dat de afbeelding pas geladen wordt als hij in beeld komt (performance).
+    {% endcomment %}
+
+    {% comment %} Webinars {% endcomment %}
     <section>
         <h2 class="h2-main-title">Webinars:</h2>
         <div class="webinars-container-scroll">
@@ -85,6 +90,11 @@
                             class="home-webinar-thumbnail-img" alt="{{ webinar.title }}" width="200" height="auto"
                             decoding="async">
                     </picture>
+
+                    {% comment %} Door vaste width en height in te stellen voorkom ik layout shifts. De browser weet dan
+                    vooraf hoeveel ruimte de afbeelding inneemt, zodat content niet verspringt zodra de afbeelding
+                    geladen is. Dit verbetert de gebruikerservaring en je performance. {% endcomment %}
+
                     <h3 class="webinar-title">{{ webinar.title }}</h3>
 
                     {% for speaker in webinar.speakers %}
@@ -107,7 +117,7 @@
         </div>
     </section>
 
-    <!-- Contourings -->
+    {% comment %} Contourings {% endcomment %}
     <section>
         <h2 class="h2-main-title">Contourings:</h2>
         <div class="contourings-container-scroll">
@@ -125,6 +135,11 @@
                             class="contouring-img" alt="{{ contouring.title }}" width="200" height="auto"
                             decoding="async">
                     </picture>
+
+                    {% comment %} Het picture element toont een afbeelding van een 'contouring' met ondersteuning voor
+                    moderne formaten. Het source element probeert eerst de AVIF- en WebP-variant van de afbeelding te
+                    laden (voor betere prestaties). Als dat niet wordt ondersteund, valt het terug op het originele
+                    formaat (.png of .jpg).{% endcomment %}
 
                     <h3 class="contouring-title">{{ contouring.title }}</h3>
 

@@ -344,6 +344,9 @@ nav .nav-links a {
     }
 }
 
+/* Deze regel activeert automatische view transitions bij navigatie tussen pagina's. 
+View transitions zorgen voor een soepele animatie tussen states of pagina's, wat de gebruikerservaring visueel mooier en fijner maakt. 
+'navigation: auto;' betekent dat de browser zelf bepaalt wanneer een overgang wordt toegepast. */
 
 
 /* Animatie about us - home */
